@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="et">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f4ee" />
+    <title>Peastarvutaja</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Peastarvutaja algus">
+          <span class="brand-mark" aria-hidden="true">+</span>
+          <span>peastarvutaja</span>
+        </a>
+        <span class="top-note"><span class="online-dot"></span> Arvuta omas tempos</span>
+      </header>
+
+      <section class="hero" id="hero" aria-labelledby="page-title">
+        <p class="eyebrow">ARVUTAMINE MUUTUB HARJUTADES KERGEMAKS</p>
+        <h1 id="page-title">Arvuta peast.<br /><span>Tunne rõõmu.</span></h1>
+        <p>Vali ajavõistlus või harjuta rahulikult just neid arvutusi, mida soovid õppida.</p>
+      </section>
+
+      <section class="app-card" aria-label="Peastarvutamise mäng">
+        <section class="setup-panel" id="setup-panel">
+          <div class="section-heading">
+            <div>
+              <p class="step-label">ALUSTAME SIIT</p>
+              <h2>Vali mänguviis</h2>
+            </div>
+            <span class="clock-badge"><span aria-hidden="true">◷</span> Vali oma tempo</span>
+          </div>
+
+          <label class="name-label" for="player-name">Sinu nimi või hüüdnimi</label>
+          <input
+            class="player-name"
+            id="player-name"
+            type="text"
+            maxlength="24"
+            placeholder="Näiteks Mari"
+            autocomplete="given-name"
+            required
+          />
+
+          <div class="mode-grid" id="mode-chooser">
+            <button class="mode-card challenge-mode" id="challenge-mode-button" type="button">
+              <span class="mode-icon" aria-hidden="true">◷</span>
+              <span class="mode-kicker">AJAVÕISTLUS</span>
+              <strong>90 sekundit</strong>
+              <small>Avad mängides uusi tasemeid ja kogud punkte.</small>
+              <span class="mode-link">Alusta võistlust <b aria-hidden="true">→</b></span>
+            </button>
+            <button class="mode-card practice-mode" id="practice-mode-button" type="button">
+              <span class="mode-icon" aria-hidden="true">✳</span>
+              <span class="mode-kicker">HARJUTAMINE</span>
+              <strong>Omas tempos</strong>
+              <small>Vali ise harjutuse tase. Aega ei võeta.</small>
+              <span class="mode-link">Vali harjutus <b aria-hidden="true">→</b></span>
+            </button>
+          </div>
+
+          <div class="practice-picker hidden" id="practice-picker">
+            <div class="picker-heading">
+              <div>
+                <p class="step-label">HARJUTAMINE</p>
+                <h2>Vali harjutuse tase</h2>
+              </div>
+              <button class="text-button" id="back-to-modes-button" type="button">← Mänguviisid</button>
+            </div>
+
+            <div class="practice-level-grid" role="group" aria-label="Harjutuse tase">
+              <button class="practice-level-option selected" type="button" data-practice-level="1" aria-pressed="true">
+                <span class="practice-level-number">1</span>
+                <span><strong>Kuni 10</strong><small>Arvud ja vastused 0–10</small></span>
+              </button>
+              <button class="practice-level-option" type="button" data-practice-level="2" aria-pressed="false">
+                <span class="practice-level-number">2</span>
+                <span><strong>Kuni 20</strong><small>Arvud ja vastused 0–20</small></span>
+              </button>
+              <button class="practice-level-option" type="button" data-practice-level="3" aria-pressed="false">
+                <span class="practice-level-number">3</span>
+                <span><strong>Kümnetega</strong><small>10, 20, 30 … kuni 100</small></span>
+              </button>
+              <button class="practice-level-option" type="button" data-practice-level="4" aria-pressed="false">
+                <span class="practice-level-number">4</span>
+                <span><strong>Kuni 100</strong><small>Erinevad täisarvud 0–100</small></span>
+              </button>
+            </div>
+
+            <p class="practice-note"><span aria-hidden="true">✳</span> Harjutad valitud tasemel nii kaua, kui soovid.</p>
+            <button class="primary-button" id="practice-start-button" type="button">
+              Alusta harjutamist <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          <section class="leaderboard-card" id="leaderboard-card" aria-labelledby="leaderboard-title">
+            <div class="leaderboard-heading">
+              <div>
+                <p class="step-label">AJAVÕISTLUSE TULEMUSED</p>
+                <h2 id="leaderboard-title">Edetabel</h2>
+              </div>
+              <div class="leaderboard-actions">
+                <span class="leaderboard-caption">Selles brauseris</span>
+                <button
+                  class="clear-leaderboard-button"
+                  id="clear-leaderboard-button"
+                  type="button"
+                >
+                  Tühjenda tulemused
+                </button>
+              </div>
+            </div>
+            <ol id="leaderboard-list" class="leaderboard-list"></ol>
+          </section>
+        </section>
+
+        <section class="game-panel hidden" id="game-panel" aria-label="Mäng käib">
+          <div class="game-topline">
+            <button class="text-button" id="leave-game-button" type="button">← Katkesta</button>
+            <div class="timer-wrap" id="timer-wrap">
+              <span class="timer-label" id="timer-label">AEGA</span>
+              <strong id="timer">90</strong>
+              <span class="timer-unit" id="timer-unit">sek</span>
+            </div>
+          </div>
+
+          <div class="time-progress" id="time-progress" aria-label="Ajavõistluse aeg">
+            <div class="time-progress-fill" id="time-progress-fill"></div>
+          </div>
+
+          <div class="countdown-overlay hidden" id="countdown-overlay" aria-live="assertive">
+            <span>VALMIS?</span>
+            <strong id="countdown-number">3</strong>
+            <small>Harjutus algab kohe</small>
+          </div>
+
+          <div class="game-layout">
+            <section class="question-area" aria-label="Arvutustehe">
+              <p class="question-label" id="mode-caption">ARVUTA PEAST</p>
+              <div class="equation" id="equation" aria-live="assertive">8 + 6 <span>=</span></div>
+              <p class="feedback" id="feedback">Sisesta vastus või kasuta numbriklahve</p>
+
+              <form id="answer-form" class="answer-form">
+                <label class="visually-hidden" for="answer-input">Sinu vastus</label>
+                <input
+                  id="answer-input"
+                  type="number"
+                  inputmode="numeric"
+                  autocomplete="off"
+                  placeholder="?"
+                  required
+                />
+                <button class="submit-button" type="submit" aria-label="Kontrolli vastust">↵</button>
+              </form>
+
+              <div class="number-pad" id="number-pad" aria-label="Numbriklahvistik">
+                <button type="button" data-digit="1">1</button>
+                <button type="button" data-digit="2">2</button>
+                <button type="button" data-digit="3">3</button>
+                <button type="button" data-digit="4">4</button>
+                <button type="button" data-digit="5">5</button>
+                <button type="button" data-digit="6">6</button>
+                <button type="button" data-digit="7">7</button>
+                <button type="button" data-digit="8">8</button>
+                <button type="button" data-digit="9">9</button>
+                <button type="button" data-action="delete" aria-label="Kustuta viimane number">⌫</button>
+                <button type="button" data-digit="0">0</button>
+                <button type="button" data-action="submit" aria-label="Kontrolli vastust">=</button>
+              </div>
+
+            </section>
+
+            <aside class="game-sidebar" aria-label="Edenemine ja tulemused">
+              <section class="level-progress-card" id="challenge-progress-panel" aria-label="Ajavõistluse tasemed">
+                <div class="level-progress-head">
+                  <div>
+                    <span class="level-progress-label">TASE</span>
+                    <strong id="stage-title">1. tase</strong>
+                  </div>
+                  <span class="level-progress-count" id="stage-count">0 / 10</span>
+                </div>
+
+                <div class="level-road">
+                  <div class="level-step current" id="level-step-1"><span>1</span><small>Kuni 10</small></div>
+                  <div class="level-connector"></div>
+                  <div class="level-step" id="level-step-2"><span>2</span><small>Kuni 20</small></div>
+                  <div class="level-connector"></div>
+                  <div class="level-step" id="level-step-3"><span>3</span><small>Kümnetega</small></div>
+                </div>
+
+                <div class="stage-meter" id="stage-meter" role="progressbar" aria-label="Järgmise taseme edenemine" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
+                  <div class="stage-meter-fill" id="stage-meter-fill"></div>
+                </div>
+                <p class="stage-progress" id="stage-progress">10 õiget vastust järgmise tasemeni</p>
+              </section>
+
+              <section class="practice-level-card hidden" id="practice-level-panel" aria-label="Valitud harjutuse tase">
+                <span class="level-progress-label">HARJUTAD PRAEGU</span>
+                <strong id="practice-level-name">Kuni 10</strong>
+                <p id="practice-level-description">Arvud ja vastused 0–10</p>
+                <span class="untimed-badge">Aega pole piiratud</span>
+              </section>
+
+              <section class="score-panel" aria-label="Sinu tulemus">
+                <div class="main-score">
+                  <span class="main-score-label" id="main-score-label">PUNKTE</span>
+                  <strong id="score">0</strong>
+                  <small id="main-score-unit">punkti</small>
+                </div>
+                <div class="score-details">
+                  <div><span>ÕIGEID</span><strong id="correct-live">0</strong></div>
+                  <div><span>TÄPSUS</span><strong id="accuracy-live">0%</strong></div>
+                  <div><span>JÄRJEST</span><strong id="streak">0</strong></div>
+                  <div><span>PROOVITUD</span><strong id="attempts">0</strong></div>
+                </div>
+              </section>
+            </aside>
+          </div>
+        </section>
+
+        <section class="result-panel hidden" id="result-panel" aria-live="polite">
+          <div class="result-mark" aria-hidden="true">✓</div>
+          <p class="step-label" id="result-mode-label">HARJUTUS TEHTUD</p>
+          <h2 id="result-title">Tubli töö!</h2>
+          <p class="result-copy" id="result-copy">Sinu kokkuvõte</p>
+
+          <div class="final-points" id="final-points-card">
+            <span>SINU PUNKTIARV</span>
+            <div><strong id="final-points">0</strong><small>punkti</small></div>
+          </div>
+
+          <div class="result-stats">
+            <div><strong id="final-correct">0</strong><span>õigeid vastuseid</span></div>
+            <div><strong id="final-accuracy">0%</strong><span>täpsus</span></div>
+            <div><strong id="final-streak">0</strong><span>järjest õigesti</span></div>
+            <div><strong id="final-attempts">0</strong><span>proovitud tehet</span></div>
+          </div>
+
+          <button class="primary-button" id="again-button" type="button">Proovi uuesti <span aria-hidden="true">↻</span></button>
+          <button class="secondary-button" id="home-button" type="button">← Tagasi mänguviiside juurde</button>
+        </section>
+      </section>
+
+      <footer class="page-footer">
+        <span>Õppimine käib harjutades.</span>
+        <span>Arvuta omas tempos <span class="footer-sparkle">✳</span></span>
+      </footer>
+    </main>
+  </body>
+</html>
